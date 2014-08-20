@@ -87,18 +87,13 @@
         xhr.responseType = "arraybuffer";
 
         xhr.onload = function() {
-            var data, imgData, jpg, png, hash;
+            var data, contentType, imgData, jpg, png, hash;
+
             data = new Uint8Array(xhr.response || xhr.mozResponseArrayBuffer);
+            contentType = xhr.getResponseHeader('content-type');
 
             try {
-                if (data[0] === 0x89 &&
-                    data[1] === 0x50 &&
-                    data[2] === 0x4e &&
-                    data[3] === 0x47 &&
-                    data[4] === 0x0d &&
-                    data[5] === 0x0a &&
-                    data[6] === 0x1a &&
-                    data[7] === 0x0a) {
+                if (contentType === 'image/png') {
                     png = new PNG(data);
 
                     imgData = {
@@ -109,8 +104,7 @@
 
                     png.copyToImageData(imgData, png.decodePixels());
                 }
-                else if (data[0] == 0xff &&
-                         data[1] == 0xd8) {
+                else if (contentType === 'image/jpeg') {
                     jpg = new JpegImage();
                     jpg.parse(data);
 

@@ -79,6 +79,84 @@
         return result;
     };
 
+    var method1_pixdiv = function(data, bits) {
+        var i, j, x, y, ii, avgvalue;
+        var weight_top, weight_bottom, weight_left, weight_right;
+        var block_top, block_bottom, block_left, block_right;
+        var y_mod, y_frac, y_int;
+        var x_mod, x_frac, x_int;
+
+        var block_width = data.width / bits;
+        var block_height = data.height / bits;
+
+        var result = [];
+
+        // initialize blocks array with 0s
+        var blocks = [];
+        for (i = 0; i < bits; i++) {
+            blocks.push([]);
+            for (j = 0; j < bits; j++) {
+                blocks[i].push(0);
+            }
+        }
+
+        for (y = 0; y < data.height; y++) {
+            y_mod = (y + 1) % block_height;
+            y_frac = y_mod - Math.floor(y_mod);
+            y_int = y_mod - y_frac;
+
+            weight_top = (1 - y_frac);
+            weight_bottom = (y_frac);
+
+            // y_int will be 0 on bottom/right borders and on block boundaries
+            if (y_int > 0 || (y + 1) === data.height) {
+                block_top = block_bottom = Math.floor(y / block_height);
+            } else {
+                block_top = Math.floor(y / block_height);
+                block_bottom = Math.ceil(y / block_height);
+            }
+
+            for (x = 0; x < data.width; x++) {
+                var ii = (y * data.width + x) * 4;
+                var avgvalue = (data.data[ii] + data.data[ii+1] + data.data[ii+2] + data.data[ii+3]) / 4.0;
+
+                x_mod = (x + 1) % block_width;
+                x_frac = x_mod - Math.floor(x_mod);
+                x_int = x_mod - x_frac;
+
+                weight_left = (1 - x_frac);
+                weight_right = x_frac;
+
+                // x_int will be 0 on bottom/right borders and on block boundaries
+                if (x_int > 0 || (x + 1) === data.width) {
+                    block_left = block_right = Math.floor(x / block_width);
+                } else {
+                    block_left = Math.floor(x / block_width);
+                    block_right = Math.ceil(x / block_width);
+                }
+
+                // add weighted pixel value to relevant blocks
+                blocks[block_top][block_left] += avgvalue * weight_top * weight_left;
+                blocks[block_top][block_right] += avgvalue * weight_top * weight_right;
+                blocks[block_bottom][block_left] += avgvalue * weight_bottom * weight_left;
+                blocks[block_bottom][block_right] += avgvalue * weight_bottom * weight_right;
+            }
+        }
+
+        for (i = 0; i < bits; i++) {
+            for (j = 0; j < bits; j++) {
+                result.push(blocks[i][j]);
+            }
+        }
+
+        var m = median(result);
+        for (var i = 0; i < bits * bits; i++) {
+            result[i] = result[i] < m ? 0 : 1;
+        }
+
+        return result;
+    };
+
     var bmvbhash = function(src, bits, method, callback) {
         var xhr;
 
@@ -128,6 +206,9 @@
                 }
                 else if (method === 2) {
                     hash = method2(imgData, bits);
+                }
+                else if (method === 3) {
+                    hash = method1_pixdiv(imgData, bits);
                 }
                 else {
                     throw new Error("Bad hashing method");

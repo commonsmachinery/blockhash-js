@@ -194,6 +194,28 @@
         return result;
     };
 
+    var bmvbhash_data = function(imgData, bits, method) {
+        var hash;
+
+        if (method === 1) {
+            hash = method1(imgData, bits);
+        }
+        else if (method === 2) {
+            hash = method2(imgData, bits);
+        }
+        else if (method === 3) {
+            hash = method_pixdiv(imgData, bits, false);
+        }
+        else if (method === 4) {
+            hash = method_pixdiv(imgData, bits, true);
+        }
+        else {
+            throw new Error("Bad hashing method");
+        }
+
+        return hash;
+    };
+
     var bmvbhash = function(src, bits, method, callback) {
         var xhr;
 
@@ -238,22 +260,7 @@
 
                 // TODO: resize if required
 
-                if (method === 1) {
-                    hash = method1(imgData, bits);
-                }
-                else if (method === 2) {
-                    hash = method2(imgData, bits);
-                }
-                else if (method === 3) {
-                    hash = method_pixdiv(imgData, bits, false);
-                }
-                else if (method === 4) {
-                    hash = method_pixdiv(imgData, bits, true);
-                }
-                else {
-                    throw new Error("Bad hashing method");
-                }
-
+                hash = bmvbhash_data(imgData, bits, method);
                 callback(null, hash);
             } catch (err) {
                 callback(err, null);
@@ -268,4 +275,5 @@
     };
 
     root.bmvbhash = bmvbhash;
+    root.bmvbhash_data = bmvbhash_data;
 })(this);

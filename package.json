@@ -1,0 +1,27 @@
+{
+    "name": "blockhash.js",
+    "version": "0.1.0",
+    "homepage": "https://github.com/commonsmachinery/blockhash-js",
+    "author": "Commons Machinery <dev@commonsmachinery.se>",
+    "description": "Perceptual image hash calculation tool",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/commonsmachinery/blockhash-js.git"
+    },
+    "scripts": {
+        "test": "echo Running test cases require the full repository"
+    },
+    "main": "./blockhash.js",
+    "keywords": [
+        "image",
+        "hashing",
+        "perceptual"
+    ],
+    "devDependencies" : {
+        "mocha" : "*",
+        "expect.js" : "*",
+        "jshint": "*",
+        "glob": "*"
+    },
+    "license": "MIT"
+}

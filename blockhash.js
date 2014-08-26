@@ -16,8 +16,8 @@
     };
 
     var method1 = function(data, bits) {
-        var blocksize_x = data.width / bits;
-        var blocksize_y = data.height / bits;
+        var blocksize_x = Math.floor(data.width / bits);
+        var blocksize_y = Math.floor(data.height / bits);
 
         var result = [];
 
@@ -30,7 +30,7 @@
                         var cx = x * blocksize_x + ix;
                         var cy = y * blocksize_y + iy;
                         var ii = (cy * data.width + cx) * 4;
-                        total += (data.data[ii] + data.data[ii+1] + data.data[ii+2] + data.data[ii+3]) / 4.0;
+                        total += data.data[ii] + data.data[ii+1] + data.data[ii+2] + data.data[ii+3];
                     }
                 }
 
@@ -63,7 +63,7 @@
                         var cx = x * overlap_x + ix;
                         var cy = y * overlap_y + iy;
                         var ii = (cy * data.width + cx) * 4;
-                        total += (data.data[ii] + data.data[ii+1] + data.data[ii+2] + data.data[ii+3]) / 4.0;
+                        total += data.data[ii] + data.data[ii+1] + data.data[ii+2] + data.data[ii+3];
                     }
                 }
 
@@ -121,7 +121,7 @@
 
                 for (x = x_offset; x < data.width; x++) {
                     var ii = (y * data.width + x) * 4;
-                    var avgvalue = (data.data[ii] + data.data[ii+1] + data.data[ii+2] + data.data[ii+3]) / 4.0;
+                    var avgvalue = data.data[ii] + data.data[ii+1] + data.data[ii+2] + data.data[ii+3];
 
                     x_mod = (x - x_offset + 1) % block_width;
                     x_frac = x_mod - Math.floor(x_mod);

@@ -9,16 +9,36 @@ A paper describing the algorithm can be found in doc/ directory.
 Usage
 -----
 
-This script requires png.js and jpgjs, which can be downloaded from:
+This script requires png.js and jpgjs, which are linked as
+git submodules.  To fetch them run:
+
+    git submodule init
+    git submodule update
+
+Or you can download them directly (but the tests require the submodules):
 
 * https://github.com/devongovett/png.js
 * https://github.com/notmasteryet/jpgjs
 
-To use the script in a page, add `<script src="blockhash.js"/>` to your page and
-call `bmvbhash(src, bits, method, callback)`, where `src` is an image URL, `bits`
-is the number of bits in a row, `method` can be either 1 (non-overlapping) or 2
-(overlapping), and `callback` is a function with `(error, result)` signature.
-On success, `result` will be array of binary values.
+To use the script in a page, add `<script src="blockhash.js"/>` to
+your page and call `bmvbhash(src, bits, method, callback)`, where
+`src` is an image URL, `bits` is the number of bits in a row, `method`
+is a number 1-4 (see below), and `callback` is a function with
+`(error, result)` signature.  On success, `result` will be array of
+binary values.
+
+The available methods are:
+
+1. Quick and crude, non-overlapping blocks
+2. Fairly quick and crude, overlapping blocks
+3. Precise but slower, non-overlapping blocks
+4. Precise but even slower, overlapping blocks
+
+Method 3 is recommended as a good tradeoff between speed and good
+matches on any image size.  The quick ones are only advisable when the
+image width and height are an even multiple of the number of blocks
+used.
+
 
 Example
 -------
@@ -37,9 +57,7 @@ Example
       <script>
         var bits = 16;
         bmvbhash('test.png', bits, 1, function(error, result) {
-          for (var y = 0; y < bits; y++) {
-              console.log(result.slice(y * bits, y * bits + bits).join(""));
-          }
+            console.log('hash: ' + result);
         });
       </script>
     </head>

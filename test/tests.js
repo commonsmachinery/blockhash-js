@@ -51,7 +51,7 @@ testFiles.forEach(function(fn) {
                 }).split(/\s/)[1];
 
                 // use hamming distance to iron out little differences in jpeg decoders
-                var hd = hammingDistance(expectedHash, hash.join(""), bits);
+                var hd = hammingDistance(expectedHash, hash);
                 expect(hd).to.be.lessThan(3);
 
                 done();

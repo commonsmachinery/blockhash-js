@@ -15,6 +15,16 @@
         return mdarr[Math.floor(mdarr.length/2)];
     };
 
+    var bits_to_hexhash = function(bitsArray) {
+        var hex = [];
+        for (var i = 0; i < bitsArray.length; i += 4) {
+            var nibble = bitsArray.slice(i, i + 4);
+            hex.push(parseInt(nibble.join(''), 2).toString(16));
+        }
+
+        return hex.join('');
+    };
+
     var method1 = function(data, bits) {
         var blocksize_x = Math.floor(data.width / bits);
         var blocksize_y = Math.floor(data.height / bits);
@@ -43,7 +53,7 @@
             result[i] = result[i] < m ? 0 : 1;
         }
 
-        return result;
+        return bits_to_hexhash(result);
     };
 
     var method2 = function(data, bits) {
@@ -76,7 +86,7 @@
             result[i] = result[i] < m ? 0 : 1;
         }
 
-        return result;
+        return bits_to_hexhash(result);
     };
 
     var method_pixdiv = function(data, bits, overlap) {
@@ -191,7 +201,7 @@
             result[i] = result[i] < m ? 0 : 1;
         }
 
-        return result;
+        return bits_to_hexhash(result);
     };
 
     var bmvbhash_data = function(imgData, bits, method) {

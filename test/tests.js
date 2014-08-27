@@ -1,5 +1,13 @@
 /* global describe, it, before */
 
+function hammingDistance(a, b, bits) {
+    var d = 0;
+    for (i = 0; i < bits*bits; i++) {
+        if (a[i] != b[i]) { d++; }
+    }
+    return d;
+}
+
 var expect = require('expect.js');
 var glob = require('glob');
 var path = require('path');
@@ -42,7 +50,9 @@ testFiles.forEach(function(fn) {
                     encoding: 'utf-8'
                 }).split(/\s/)[1];
 
-                expect(expectedHash).to.be(hash.join(""));
+                // use hamming distance to iron out little differences in jpeg decoders
+                var hd = hammingDistance(expectedHash, hash.join(""), bits);
+                expect(hd).to.be.lessThan(3);
 
                 done();
             });

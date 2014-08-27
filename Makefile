@@ -7,7 +7,7 @@ MOCHA = $(top)/node_modules/.bin/mocha
 src = $(top)/blockhash.js
 
 # Modules should add files to be checked with jshint
-jshint-files = $(src)
+jshint-files = $(src) $(mocha-files)
 
 # Modules should add files to be run as unit tests
 mocha-files = $(top)/test/tests.js

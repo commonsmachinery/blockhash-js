@@ -4,7 +4,10 @@
 // Copyright 2014 Commons Machinery http://commonsmachinery.se/
 // Distributed under an MIT license, please see LICENSE in the top dir.
 
+/* global PNG, JpegImage */
+
 (function (root, undef) {
+    'use strict';
 
     var median = function(data) {
         var mdarr = data.slice(0);
@@ -93,7 +96,7 @@
         var result = [];
 
         function onepass(block_width, block_height, x_offset, y_offset, maxblocks) {
-            var i, j, x, y, ii, avgvalue;
+            var i, j, x, y;
             var weight_top, weight_bottom, weight_left, weight_right;
             var block_top, block_bottom, block_left, block_right;
             var y_mod, y_frac, y_int;
@@ -125,7 +128,7 @@
                 }
 
                 // stop after reaching maxblocks, in case we're doing 4-pass analysis with overlapping blocks
-                if (block_bottom == maxblocks) {
+                if (block_bottom === maxblocks) {
                     break;
                 }
 
@@ -149,7 +152,7 @@
                     }
 
                     // stop after reaching maxblocks, in case we're doing 4-pass analysis with overlapping blocks
-                    if (block_right == maxblocks) {
+                    if (block_right === maxblocks) {
                         break;
                     }
 
@@ -163,11 +166,13 @@
             return blocks;
         }
 
+        var block_width, block_height, i, j;
+
         if (overlap) {
             var overlap_width = data.width / (bits + 1);
             var overlap_height = data.height / (bits + 1);
-            var block_width = overlap_width * 2;
-            var block_height = overlap_height * 2;
+            block_width = overlap_width * 2;
+            block_height = overlap_height * 2;
 
             var blocks1 = onepass(block_width, block_height, 0, 0, Math.floor(bits / 2));
             var blocks2 = onepass(block_width, block_height, Math.floor(overlap_width), 0, Math.floor(bits / 2));
@@ -185,8 +190,8 @@
                 }
             }
         } else {
-            var block_width = data.width / bits;
-            var block_height = data.height / bits;
+            block_width = data.width / bits;
+            block_height = data.height / bits;
             var blocks = onepass(block_width, block_height, 0, 0, bits);
 
             for (i = 0; i < bits; i++) {
@@ -197,7 +202,7 @@
         }
 
         var m = median(result);
-        for (var i = 0; i < bits * bits; i++) {
+        for (i = 0; i < bits * bits; i++) {
             result[i] = result[i] < m ? 0 : 1;
         }
 
@@ -279,7 +284,7 @@
 
         xhr.onerror = function(err) {
             callback(err, null);
-        }
+        };
 
         xhr.send();
     };

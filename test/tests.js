@@ -1,9 +1,12 @@
-/* global describe, it, before */
+/* global describe, it, JpegImage */
+
+'use strict';
 
 function hammingDistance(a, b, bits) {
     var d = 0;
+    var i;
     for (i = 0; i < bits*bits; i++) {
-        if (a[i] != b[i]) { d++; }
+        if (a[i] !== b[i]) { d++; }
     }
     return d;
 }
@@ -20,7 +23,7 @@ var fs = require('fs');
 vm.runInThisContext(fs.readFileSync(require.resolve('../jpgjs/jpg.js')));
 
 // use standard require to load png.js
-var PNG = require('../png.js/png-node.js');
+//var PNG = require('../png.js/png-node.js');
 
 var testFiles = glob.sync('test/data/*.jpg');
 
@@ -58,4 +61,4 @@ testFiles.forEach(function(fn) {
             });
         });
     });
-})
+});

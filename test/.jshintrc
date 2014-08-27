@@ -1,0 +1,17 @@
+{
+    "bitwise": true,
+    "curly": true,
+    "eqeqeq": true,
+    "forin": true,
+    "freeze": true,
+    "immed": true,
+    "latedef": true,
+    "newcap": true,
+    "undef": true,
+    "unused": "vars",
+    "strict": true,
+
+    "node": true,
+
+    "predef": [ "-Promise" ]
+}

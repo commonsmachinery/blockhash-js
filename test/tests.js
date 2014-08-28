@@ -2,20 +2,11 @@
 
 'use strict';
 
-function hammingDistance(a, b, bits) {
-    var d = 0;
-    var i;
-    for (i = 0; i < bits*bits; i++) {
-        if (a[i] !== b[i]) { d++; }
-    }
-    return d;
-}
-
 var expect = require('expect.js');
 var glob = require('glob');
 var path = require('path');
 
-var bmvbhash_data = require('../blockhash.js').bmvbhash_data;
+var blockhash = require('../blockhash');
 
 // attempt to load jpgjs using vm
 var vm = require('vm');
@@ -47,14 +38,14 @@ testFiles.forEach(function(fn) {
                 };
 
                 jpg.copyToImageData(imgData);
-                hash = bmvbhash_data(imgData, bits, m);
+                hash = blockhash.bmvbhashData(imgData, bits, m);
 
                 expectedHash = fs.readFileSync("test/data/" + basename + "_" + bits + "_" + m + ".txt", {
                     encoding: 'utf-8'
                 }).split(/\s/)[1];
 
                 // use hamming distance to iron out little differences in jpeg decoders
-                var hd = hammingDistance(expectedHash, hash);
+                var hd = blockhash.hammingDistance(expectedHash, hash);
                 expect(hd).to.be.lessThan(3);
 
                 done();

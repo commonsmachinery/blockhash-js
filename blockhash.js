@@ -9,6 +9,20 @@
 (function (root, undef) {
     'use strict';
 
+    var one_bits = [0, 1, 1, 2, 1, 2, 2, 3, 1, 2, 2, 3, 2, 3, 3, 4];
+
+    /* Calculate the hamming distance for two hashes in hex format */
+    var hammingDistance = function(hash1, hash2) {
+        var d = 0;
+        var i;
+        for (i = 0; i < hash1.length; i++) {
+            var n1 = parseInt(hash1[i], 16);
+            var n2 = parseInt(hash2[i], 16);
+            d += one_bits[n1 ^ n2];
+        }
+        return d;
+    };
+
     var median = function(data) {
         var mdarr = data.slice(0);
         mdarr.sort(function(a, b) { return a-b; });
@@ -209,7 +223,7 @@
         return bits_to_hexhash(result);
     };
 
-    var bmvbhash_data = function(imgData, bits, method) {
+    var bmvbhashData = function(imgData, bits, method) {
         var hash;
 
         if (method === 1) {
@@ -275,7 +289,7 @@
 
                 // TODO: resize if required
 
-                hash = bmvbhash_data(imgData, bits, method);
+                hash = bmvbhashData(imgData, bits, method);
                 callback(null, hash);
             } catch (err) {
                 callback(err, null);
@@ -289,6 +303,7 @@
         xhr.send();
     };
 
+    root.hammingDistance = hammingDistance;
     root.bmvbhash = bmvbhash;
-    root.bmvbhash_data = bmvbhash_data;
+    root.bmvbhashData = bmvbhashData;
 })(this);

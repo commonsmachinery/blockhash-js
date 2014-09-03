@@ -28,9 +28,7 @@ binary values.
 The available methods are:
 
 1. Quick and crude, non-overlapping blocks
-2. Fairly quick and crude, overlapping blocks
-3. Precise but slower, non-overlapping blocks
-4. Precise but even slower, overlapping blocks
+2. Precise but slower, non-overlapping blocks
 
 Method 3 is recommended as a good tradeoff between speed and good
 matches on any image size.  The quick ones are only advisable when the

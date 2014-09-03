@@ -23,7 +23,7 @@ testFiles.forEach(function(fn) {
         var basename = path.basename(fn, '.jpg');
         var bits = 16;
 
-        [1, 2, 3, 4].forEach(function(m) {
+        [1, 2].forEach(function(m) {
             it('method' + m, function(done) {
                 var jpg, data, imgData, hash, expectedHash;
 
@@ -38,7 +38,7 @@ testFiles.forEach(function(fn) {
                 };
 
                 jpg.copyToImageData(imgData);
-                hash = blockhash.bmvbhashData(imgData, bits, m);
+                hash = blockhash.blockhashData(imgData, bits, m);
 
                 expectedHash = fs.readFileSync("test/data/" + basename + "_" + bits + "_" + m + ".txt", {
                     encoding: 'utf-8'

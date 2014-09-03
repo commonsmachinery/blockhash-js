@@ -42,7 +42,7 @@
         return hex.join('');
     };
 
-    var blockhash_even = function(data, bits) {
+    var bmvbhash_even = function(data, bits) {
         var blocksize_x = Math.floor(data.width / bits);
         var blocksize_y = Math.floor(data.height / bits);
 
@@ -73,7 +73,7 @@
         return bits_to_hexhash(result);
     };
 
-    var blockhash = function(data, bits) {
+    var bmvbhash = function(data, bits) {
         var result = [];
 
         var i, j, x, y;
@@ -88,7 +88,7 @@
         var even_y = data.height % bits === 0;
 
         if (even_x && even_y) {
-            return blockhash_even(data, bits);
+            return bmvbhash_even(data, bits);
         }
 
         // initialize blocks array with 0s
@@ -172,14 +172,14 @@
         return bits_to_hexhash(result);
     };
 
-    var bmvbhashData = function(imgData, bits, method) {
+    var blockhashData = function(imgData, bits, method) {
         var hash;
 
         if (method === 1) {
-            hash = blockhash_even(imgData, bits);
+            hash = bmvbhash_even(imgData, bits);
         }
         else if (method === 2) {
-            hash = blockhash(imgData, bits);
+            hash = bmvbhash(imgData, bits);
         }
         else {
             throw new Error("Bad hashing method");
@@ -188,7 +188,7 @@
         return hash;
     };
 
-    var bmvbhash = function(src, bits, method, callback) {
+    var blockhash = function(src, bits, method, callback) {
         var xhr;
 
         xhr = new XMLHttpRequest();
@@ -232,7 +232,7 @@
 
                 // TODO: resize if required
 
-                hash = bmvbhashData(imgData, bits, method);
+                hash = blockhashData(imgData, bits, method);
                 callback(null, hash);
             } catch (err) {
                 callback(err, null);
@@ -247,6 +247,6 @@
     };
 
     root.hammingDistance = hammingDistance;
-    root.bmvbhash = bmvbhash;
-    root.bmvbhashData = bmvbhashData;
+    root.blockhash = blockhash;
+    root.blockhashData = blockhashData;
 })(this);

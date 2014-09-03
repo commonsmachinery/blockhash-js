@@ -19,7 +19,7 @@ Or you can download them directly (but the tests require the submodules):
 * https://github.com/notmasteryet/jpgjs
 
 To use the script in a page, add `<script src="blockhash.js"/>` to
-your page and call `bmvbhash(src, bits, method, callback)`, where
+your page and call `blockhash(src, bits, method, callback)`, where
 `src` is an image URL, `bits` is the number of bits in a row, `method`
 is a number 1-4 (see below), and `callback` is a function with
 `(error, result)` signature.  On success, `result` will be array of
@@ -52,7 +52,7 @@ Example
 
       <script>
         var bits = 16;
-        bmvbhash('test.png', bits, 1, function(error, result) {
+        blockhash('test.png', bits, 1, function(error, result) {
             console.log('hash: ' + result);
         });
       </script>

@@ -1,0 +1,6 @@
+puffy_white.jpg - http://www.nasa.gov/multimedia/imagegallery/image_feature_2466.html
+clipper_ship.jpg - http://commons.wikimedia.org/wiki/File:%27Clipper_Ship_Great_Republic%27_by_James_Butterworth,_c._1853_-_Old_State_House_Museum,_Boston,_MA_-_IMG_6709.JPG
+emptyBasket.png - https://openclipart.org/detail/194657/plastic-laundry-basket-by-gubrww2-194657
+Babylonian.png - https://openclipart.org/detail/194594/babylonian-or-summerian-religious-deity-by-lordoftheloch-194594
+
+The remaining test images come from http://www.getty.edu/about/opencontent.html

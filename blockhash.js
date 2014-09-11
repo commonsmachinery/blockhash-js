@@ -134,7 +134,7 @@
             for (x = 0; x < data.width; x++) {
                 var ii = (y * data.width + x) * 4;
 
-                var alpha = data.data[ii+3];
+                var avgvalue, alpha = data.data[ii+3];
                 if (alpha === 0) {
                     avgvalue = 765;
                 } else {

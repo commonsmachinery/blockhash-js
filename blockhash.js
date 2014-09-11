@@ -57,7 +57,13 @@
                         var cx = x * blocksize_x + ix;
                         var cy = y * blocksize_y + iy;
                         var ii = (cy * data.width + cx) * 4;
-                        total += data.data[ii] + data.data[ii+1] + data.data[ii+2] + data.data[ii+3];
+
+                        var alpha = data.data[ii+3];
+                        if (alpha === 0) {
+                            total += 765;
+                        } else {
+                            total += data.data[ii] + data.data[ii+1] + data.data[ii+2];
+                        }
                     }
                 }
 
@@ -127,7 +133,13 @@
 
             for (x = 0; x < data.width; x++) {
                 var ii = (y * data.width + x) * 4;
-                var avgvalue = data.data[ii] + data.data[ii+1] + data.data[ii+2] + data.data[ii+3];
+
+                var alpha = data.data[ii+3];
+                if (alpha === 0) {
+                    avgvalue = 765;
+                } else {
+                    avgvalue = data.data[ii] + data.data[ii+1] + data.data[ii+2];
+                }
 
                 if (even_x) {
                     block_left = block_right = Math.floor(x / block_width);

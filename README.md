@@ -16,7 +16,8 @@ This module is installed via npm:
 Use in the browser
 -----
 To use this library in the browser, you can build it with Browserify
-with something like `browserify -r ./index:blockhash > blockhash.js`.
+with something like `browserify index.js --standalone blockhashjs >
+blockhash.js`
 
 Include it and `zlib.js` on your page:
 ```html
@@ -29,7 +30,7 @@ Include it and `zlib.js` on your page:
     <script src="node_modules/png-js/zlib.js"></script>
     <script src="blockhash.js"></script>
     <script>
-      var blockhash = require('blockhash').blockhash;
+      var blockhash = blockhashjs.blockhash;
     </script>
   </body>
 </html>

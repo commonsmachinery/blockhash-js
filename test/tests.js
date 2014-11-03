@@ -5,16 +5,12 @@
 var expect = require('expect.js');
 var glob = require('glob');
 var path = require('path');
-
-var blockhash = require('../blockhash');
-
-// attempt to load jpgjs using vm
-var vm = require('vm');
 var fs = require('fs');
-vm.runInThisContext(fs.readFileSync(require.resolve('../jpgjs/jpg.js')));
 
-// use standard require to load png.js
-var PNG = require('../png.js/png-node.js');
+var blockhash = require('..');
+
+var PNG = require('png-js');
+var jpeg = require('jpeg-js');
 
 var testFiles = glob.sync('test/data/*.jpg')
     .concat(glob.sync('test/data/*.png'));
@@ -34,17 +30,7 @@ testFiles.forEach(function(fn) {
                 switch (ext) {
                 case '.jpg':
                     getImgData = function(next) {
-                        var jpg = new JpegImage();
-                        jpg.parse(data);
-
-                        var imgData = {
-                            width: jpg.width,
-                            height: jpg.height,
-                            data: new Uint8Array(jpg.width * jpg.height * 4)
-                        };
-
-                        jpg.copyToImageData(imgData);
-                        next(imgData);
+                        next(jpeg.decode(data));
                     };
                     break;
 

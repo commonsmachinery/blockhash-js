@@ -4,22 +4,39 @@ blockhash-js
 This is a perceptual image hash calculation tool based on algorithm descibed in
 Block Mean Value Based Image Perceptual Hashing by Bian Yang, Fan Gu and Xiamu Niu.
 
-Usage
+Installation
 -----
 
-This script requires png.js and jpgjs, which are linked as
-git submodules.  To fetch them run:
+This module is installed via npm:
 
-    git submodule init
-    git submodule update
+```
+  $ npm install blockhash-js
+```
 
-Or you can download them directly (but the tests require the submodules):
+Use in the browser
+-----
+To use this library in the browser, you can build it with Browserify
+with something like `browserify index.js --standalone blockhashjs >
+blockhash.js`
 
-* https://github.com/devongovett/png.js
-* https://github.com/notmasteryet/jpgjs
+Include it and `zlib.js` on your page:
+```html
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Blockhash</title>
+  </head>
+  <body>
+    <script src="node_modules/png-js/zlib.js"></script>
+    <script src="blockhash.js"></script>
+    <script>
+      var blockhash = blockhashjs.blockhash;
+    </script>
+  </body>
+</html>
+```
 
-To use the script in a page, add `<script src="blockhash.js"/>` to
-your page and call `blockhash(src, bits, method, callback)`, where
+Call `blockhash(src, bits, method, callback)`, where
 `src` is an image URL, `bits` is the number of bits in a row, `method`
 is a number 1-4 (see below), and `callback` is a function with
 `(error, result)` signature.  On success, `result` will be array of
@@ -34,32 +51,6 @@ Method 3 is recommended as a good tradeoff between speed and good
 matches on any image size.  The quick ones are only advisable when the
 image width and height are an even multiple of the number of blocks
 used.
-
-
-Example
--------
-
-    <!DOCTYPE html>
-    <html>
-    <head>
-      <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-
-      <script src="png.js/zlib.js"></script>
-      <script src="png.js/png.js"></script>
-      <script src="jpgjs/jpg.js"></script>
-
-      <script src="blockhash.js"></script>
-
-      <script>
-        var bits = 16;
-        blockhash('test.png', bits, 1, function(error, result) {
-            console.log('hash: ' + result);
-        });
-      </script>
-    </head>
-    <body>
-    </body>
-    </html>
 
 License
 -------

@@ -69,9 +69,20 @@ var bmvbhash_even = function(data, bits) {
         }
     }
 
-    var m = median(result);
+    var m = [];
+    for (var i = 0; i < 4; i++) {
+        m[i] = median(result.slice(i*bits*bits/4, i*bits*bits/4+bits*bits/4));
+    }
     for (var i = 0; i < bits * bits; i++) {
-        result[i] = result[i] < m ? 0 : 1;
+        if (  ((result[i] < m[0]) && (i < bits*bits/4))
+            ||((result[i] < m[1]) && (i >= bits*bits/4) && (i < bits*bits/2))
+            ||((result[i] < m[2]) && (i >= bits*bits/2) && (i < bits*bits/4+bits*bits/2))
+            ||((result[i] < m[3]) && (i >= bits*bits/2+bits*bits/4))
+            ) {
+           result[i] = 0;
+        } else {
+           result[i] = 1;
+        }
     }
 
     return bits_to_hexhash(result);
@@ -174,9 +185,20 @@ var bmvbhash = function(data, bits) {
         }
     }
 
-    var m = median(result);
-    for (i = 0; i < bits * bits; i++) {
-        result[i] = result[i] < m ? 0 : 1;
+    var m = [];
+    for (var i = 0; i < 4; i++) {
+        m[i] = median(result.slice(i*bits*bits/4, i*bits*bits/4+bits*bits/4));
+    }
+    for (var i = 0; i < bits * bits; i++) {
+        if (  ((result[i] < m[0]) && (i < bits*bits/4))
+            ||((result[i] < m[1]) && (i >= bits*bits/4) && (i < bits*bits/2))
+            ||((result[i] < m[2]) && (i >= bits*bits/2) && (i < bits*bits/4+bits*bits/2))
+            ||((result[i] < m[3]) && (i >= bits*bits/2+bits*bits/4))
+            ) {
+           result[i] = 0;
+        } else {
+           result[i] = 1;
+        }
     }
 
     return bits_to_hexhash(result);

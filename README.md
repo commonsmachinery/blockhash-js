@@ -10,7 +10,7 @@ Installation
 This module is installed via npm:
 
 ```
-  $ npm install blockhash-js
+  $ npm install blockhash
 ```
 
 Use in the browser

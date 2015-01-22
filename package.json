@@ -12,17 +12,6 @@
     "test": "mocha"
   },
   "main": "index.js",
-  "browser": {
-    "png-js": "./node_modules/png-js/png.js"
-  },
-  "browserify-shim": {
-    "png-js": "PNG"
-  },
-  "browserify": {
-    "transform": [
-      "browserify-shim"
-    ]
-  },
   "keywords": [
     "image",
     "hashing",
@@ -30,8 +19,7 @@
   ],
   "dependencies": {
     "jpeg-js": "0.0.4",
-    "png-js": "^0.1.1",
-    "browserify-shim": "^3.8.0"
+    "png-js": "^0.1.1"
   },
   "devDependencies": {
     "expect.js": "*",

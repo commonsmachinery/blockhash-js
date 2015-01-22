@@ -19,7 +19,6 @@ To use this library in the browser, you can build it with Browserify
 with something like `browserify index.js --standalone blockhashjs >
 blockhash.js`
 
-Include it and `zlib.js` on your page:
 ```html
 <!DOCTYPE html>
 <html>
@@ -27,7 +26,6 @@ Include it and `zlib.js` on your page:
     <title>Blockhash</title>
   </head>
   <body>
-    <script src="node_modules/png-js/zlib.js"></script>
     <script src="blockhash.js"></script>
     <script>
       var blockhash = blockhashjs.blockhash;

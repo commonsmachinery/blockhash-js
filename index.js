@@ -30,6 +30,27 @@ var median = function(data) {
     return mdarr[Math.floor(mdarr.length/2)];
 };
 
+var translate_blocks_to_bits = function(blocks, pixels_per_block) {
+    var half_block_value = pixels_per_block * 256 * 3 / 2;
+    var bandsize = blocks.length / 4;
+
+    // Compare medians across four horizontal bands
+    for (var i = 0; i < 4; i++) {
+        var m = median(blocks.slice(i * bandsize, (i + 1) * bandsize));
+        for (var j = i * bandsize; j < (i + 1) * bandsize; j++) {
+            var v = blocks[j];
+
+            // Output a 1 if the block is brighter than the median.
+            // With images dominated by black or white, the median may
+            // end up being 0 or the max value, and thus having a lot
+            // of blocks of value equal to the median.  To avoid
+            // generating hashes of all zeros or ones, in that case output
+            // 0 if the median is in the lower value space, 1 otherwise
+            blocks[j] = Number(v > m || (Math.abs(v - m) < 1 && m > half_block_value));
+        }
+    }
+};
+
 var bits_to_hexhash = function(bitsArray) {
     var hex = [];
     for (var i = 0; i < bitsArray.length; i += 4) {
@@ -69,22 +90,7 @@ var bmvbhash_even = function(data, bits) {
         }
     }
 
-    var m = [];
-    for (var i = 0; i < 4; i++) {
-        m[i] = median(result.slice(i*bits*bits/4, i*bits*bits/4+bits*bits/4));
-    }
-    for (var i = 0; i < bits * bits; i++) {
-        if (  ((result[i] < m[0]) && (i < bits*bits/4))
-            ||((result[i] < m[1]) && (i >= bits*bits/4) && (i < bits*bits/2))
-            ||((result[i] < m[2]) && (i >= bits*bits/2) && (i < bits*bits/4+bits*bits/2))
-            ||((result[i] < m[3]) && (i >= bits*bits/2+bits*bits/4))
-            ) {
-           result[i] = 0;
-        } else {
-           result[i] = 1;
-        }
-    }
-
+    translate_blocks_to_bits(result, blocksize_x * blocksize_y);
     return bits_to_hexhash(result);
 };
 
@@ -185,22 +191,7 @@ var bmvbhash = function(data, bits) {
         }
     }
 
-    var m = [];
-    for (var i = 0; i < 4; i++) {
-        m[i] = median(result.slice(i*bits*bits/4, i*bits*bits/4+bits*bits/4));
-    }
-    for (var i = 0; i < bits * bits; i++) {
-        if (  ((result[i] < m[0]) && (i < bits*bits/4))
-            ||((result[i] < m[1]) && (i >= bits*bits/4) && (i < bits*bits/2))
-            ||((result[i] < m[2]) && (i >= bits*bits/2) && (i < bits*bits/4+bits*bits/2))
-            ||((result[i] < m[3]) && (i >= bits*bits/2+bits*bits/4))
-            ) {
-           result[i] = 0;
-        } else {
-           result[i] = 1;
-        }
-    }
-
+    translate_blocks_to_bits(result, block_width * block_height);
     return bits_to_hexhash(result);
 };
 
@@ -273,5 +264,5 @@ module.exports = {
   hammingDistance: hammingDistance,
   blockhash: blockhash,
   blockhashData: blockhashData
-}
+};
 

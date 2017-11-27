@@ -25,7 +25,7 @@ var median = function(data) {
     var mdarr = data.slice(0);
     mdarr.sort(function(a, b) { return a-b; });
     if (mdarr.length % 2 === 0) {
-        return (mdarr[mdarr.length/2] + mdarr[mdarr.length/2 + 1]) / 2.0;
+        return (mdarr[mdarr.length/2 - 1] + mdarr[mdarr.length/2]) / 2.0;
     }
     return mdarr[Math.floor(mdarr.length/2)];
 };

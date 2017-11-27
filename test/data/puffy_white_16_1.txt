@@ -1,1 +1,1 @@
-puffy_white.png 00000000ffbffffff803f807f807f807f90ff90fb90c9900ffff7fff00000000
+00000000fffffffff803f807f807f80ff90ff90fb90c9980ffffffff00000000  puffy_white.png

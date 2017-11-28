@@ -217,52 +217,29 @@ var blockhashData = function(imgData, bits, method) {
 };
 
 var blockhash = function(src, bits, method, callback) {
-    var xhr;
+    var canvas = document.createElement('canvas'),
+    ctx = canvas.getContext('2d'),
+    img = new Image;
 
-    xhr = new XMLHttpRequest();
-    xhr.open('GET', src, true);
-    xhr.responseType = "arraybuffer";
+    img.onload = function(){
+        canvas.height = img.height;
+        canvas.width = img.width;
+        ctx.drawImage(img, 0, 0);
 
-    xhr.onload = function() {
-        var data, contentType, imgData, jpg, png, hash;
+        var imgData = ctx.getImageData(0, 0, img.width, img.height);
+        var hash = blockhash.blockhashData(imgData, 16, 2);
 
-        data = new Uint8Array(xhr.response || xhr.mozResponseArrayBuffer);
-        contentType = xhr.getResponseHeader('content-type');
+        // destroy canvas element
+        canvas = null;
 
-        try {
-            if (contentType === 'image/png') {
-                png = new PNG(data);
+        callack(null, hash);
 
-                imgData = {
-                    width: png.width,
-                    height: png.height,
-                    data: new Uint8Array(png.width * png.height * 4)
-                };
-
-                png.copyToImageData(imgData, png.decodePixels());
-            }
-            else if (contentType === 'image/jpeg') {
-                imgData = jpeg.decode(data);
-            }
-
-            if (!imgData) {
-                throw new Error("Couldn't decode image");
-            }
-
-            // TODO: resize if required
-
-            hash = blockhashData(imgData, bits, method);
-            callback(null, hash);
-        } catch (err) {
-            callback(err, null);
-        }
     };
+    img.src = url;
 
-    xhr.onerror = function(err) {
+    img.onerror = function(err) {
         callback(err, null);
     };
-
-    xhr.send();
 };
 
 module.exports = {

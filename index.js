@@ -13,6 +13,11 @@ var one_bits = [0, 1, 1, 2, 1, 2, 2, 3, 1, 2, 2, 3, 2, 3, 3, 4];
 var hammingDistance = function(hash1, hash2) {
     var d = 0;
     var i;
+
+    if (hash1.length !== hash2.length) {
+        throw new Error("Can't compare hashes with different length");
+    }
+
     for (i = 0; i < hash1.length; i++) {
         var n1 = parseInt(hash1[i], 16);
         var n2 = parseInt(hash2[i], 16);
@@ -25,7 +30,7 @@ var median = function(data) {
     var mdarr = data.slice(0);
     mdarr.sort(function(a, b) { return a-b; });
     if (mdarr.length % 2 === 0) {
-        return (mdarr[mdarr.length/2] + mdarr[mdarr.length/2 + 1]) / 2.0;
+        return (mdarr[mdarr.length/2 - 1] + mdarr[mdarr.length/2]) / 2.0;
     }
     return mdarr[Math.floor(mdarr.length/2)];
 };

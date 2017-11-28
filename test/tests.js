@@ -55,7 +55,7 @@ testFiles.forEach(function(fn) {
 
                     expectedHash = fs.readFileSync("test/data/" + basename + "_" + bits + "_" + m + ".txt", {
                         encoding: 'utf-8'
-                    }).split(/\s/)[1];
+                    }).split(/\s/)[0];
 
                     // use hamming distance to iron out little
                     // differences between this jpeg decoder and the one in PIL

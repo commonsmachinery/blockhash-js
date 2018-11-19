@@ -4,7 +4,7 @@
 // Copyright 2014 Commons Machinery http://commonsmachinery.se/
 // Distributed under an MIT license, please see LICENSE in the top dir.
 
-var PNG = require('png-js');
+var PNG = require('png-js/zlib.js');
 var jpeg = require('jpeg-js');
 
 var one_bits = [0, 1, 1, 2, 1, 2, 2, 3, 1, 2, 2, 3, 2, 3, 3, 4];

@@ -106,8 +106,8 @@ var bmvbhash = function(data, bits) {
     var block_width, block_height;
     var weight_top, weight_bottom, weight_left, weight_right;
     var block_top, block_bottom, block_left, block_right;
-    var y_mod, y_frac, y_int;
-    var x_mod, x_frac, x_int;
+    var y_mod, y_frac, y_int, y_mult;
+    var x_mod, x_frac, x_int, x_mult;
     var blocks = [];
 
     var even_x = data.width % bits === 0;
@@ -128,19 +128,29 @@ var bmvbhash = function(data, bits) {
     block_width = data.width / bits;
     block_height = data.height / bits;
 
+    y_int = 1;
+    y_frac = 0;
+
+    y_mult = block_height;
+
+    weight_top = 1;
+    weight_bottom = 0;
+
     for (y = 0; y < data.height; y++) {
         if (even_y) {
-            // don't bother dividing y, if the size evenly divides by bits
             block_top = block_bottom = Math.floor(y / block_height);
-            weight_top = 1;
-            weight_bottom = 0;
         } else {
-            y_mod = (y + 1) % block_height;
-            y_frac = y_mod - Math.floor(y_mod);
-            y_int = y_mod - y_frac;
+            if (y + 1 >= y_mult) {
+                y_mod = (y + 1) % block_height;
+                y_int = Math.floor(y_mod);
+                y_frac = y_mod - y_int;
 
-            weight_top = (1 - y_frac);
-            weight_bottom = (y_frac);
+                if (block_height > 1)
+                  y_mult = Math.ceil((y + 1) / block_height) * block_height;
+
+                weight_top = 1 - y_frac;
+                weight_bottom = y_frac;
+            }
 
             // y_int will be 0 on bottom/right borders and on block boundaries
             if (y_int > 0 || (y + 1) === data.height) {
@@ -150,6 +160,14 @@ var bmvbhash = function(data, bits) {
                 block_bottom = Math.ceil(y / block_height);
             }
         }
+
+        x_int = 1;
+        x_frac = 0;
+
+        x_mult = block_width;
+
+        weight_left = 1;
+        weight_right = 0;
 
         for (x = 0; x < data.width; x++) {
             var ii = (y * data.width + x) * 4;
@@ -163,15 +181,18 @@ var bmvbhash = function(data, bits) {
 
             if (even_x) {
                 block_left = block_right = Math.floor(x / block_width);
-                weight_left = 1;
-                weight_right = 0;
             } else {
-                x_mod = (x + 1) % block_width;
-                x_frac = x_mod - Math.floor(x_mod);
-                x_int = x_mod - x_frac;
+                if (x + 1 >= x_mult) {
+                    x_mod = (x + 1) % block_width;
+                    x_int = Math.floor(x_mod);
+                    x_frac = x_mod - x_int;
 
-                weight_left = (1 - x_frac);
-                weight_right = x_frac;
+                    if (block_width > 1)
+                      x_mult = Math.ceil((x + 1) / block_width) * block_width;
+
+                    weight_left = 1 - x_frac;
+                    weight_right = x_frac;
+                }
 
                 // x_int will be 0 on bottom/right borders and on block boundaries
                 if (x_int > 0 || (x + 1) === data.width) {
@@ -187,7 +208,11 @@ var bmvbhash = function(data, bits) {
             blocks[block_top][block_right] += avgvalue * weight_top * weight_right;
             blocks[block_bottom][block_left] += avgvalue * weight_bottom * weight_left;
             blocks[block_bottom][block_right] += avgvalue * weight_bottom * weight_right;
+
+            x_int++;
         }
+
+        y_int++;
     }
 
     for (i = 0; i < bits; i++) {

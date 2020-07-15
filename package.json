@@ -1,6 +1,6 @@
 {
   "name": "blockhash",
-  "version": "0.3",
+  "version": "0.3.0",
   "homepage": "https://github.com/commonsmachinery/blockhash-js",
   "author": "Commons Machinery <dev@commonsmachinery.se>",
   "description": "Perceptual image hash calculation tool",

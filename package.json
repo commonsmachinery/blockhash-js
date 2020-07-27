@@ -32,7 +32,7 @@
     "browserify-shim": "^3.8.0",
     "expect.js": "*",
     "glob": "*",
-    "jpeg-js": "0.0.4",
+    "jpeg-js": "0.4.1",
     "jshint": "*",
     "mocha": "*",
     "png-js": "^0.1.1"
